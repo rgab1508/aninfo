@@ -1,10 +1,14 @@
+import os
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='$')
+DISCORD_API_TOKEN = os.getenv('ANINFO_DIS_API_TOKEN')
+COMMAND_PREFIX = os.getenv('ANINFO_COMMAND_PREFIX') or ","
+bot = commands.Bot(command_prefix=COMMAND_PREFIX)
 
 @bot.command()
 async def info(ctx):
-    print(ctx, dir(ctx))
+    print(ctx, dir(ctx), ctx.message.author)
+    await ctx.send(f'hi {ctx.message.author}')
 
 
-bot.run('NzYxMjEwMDkxMDU5NTQ0MDc1.X3XSJA.KohzUaFXQC2a6xn2mdavDgimu2Q')
+bot.run(DISCORD_API_TOKEN)
