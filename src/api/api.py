@@ -254,6 +254,3 @@ def get_studio_by_id(id):
 
     return req.json()
 
-
-
-print(get_studio_by_id(1))
