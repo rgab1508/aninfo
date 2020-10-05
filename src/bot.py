@@ -1,5 +1,6 @@
 import os
 from discord.ext import commands
+from discord import Embed, Color
 
 from api.api import get_media_by_name, get_media_by_id, get_character_by_name, get_character_by_id, get_studio_by_name, get_studio_by_id
 
@@ -24,7 +25,11 @@ async def search(ctx, *args):
     name = ' '.join(args)
     res = get_media_by_name(name, "ANIME")
     await searching(ctx, name)
-    print(res)
+    data = res['data']['Media']
+    print(data, type(data), data.keys())
+    em = Embed(title=data['title']['english'], color=Color(0xE5E242))
+    em.set_image(url=data['bannerImage'])
+    await ctx.send(embed=em)
 
 @bot.command()
 async def charcter(ctx, *args):
