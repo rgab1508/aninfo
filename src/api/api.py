@@ -18,9 +18,10 @@ def get_media_by_name(name, type=None):
                     english
                     native
                 }
+                type
                 format
                 status
-                description(asHtml: true)
+                description(asHtml: false)
                 startDate{
                     day
                     month
@@ -41,6 +42,7 @@ def get_media_by_name(name, type=None):
                 popularity
                 favourites
                 isAdult
+                siteUrl
                 studios{
                     nodes{
                         name
@@ -74,6 +76,7 @@ def get_media_by_id(id, type=None):
                     english
                     native
                 }
+                type
                 format
                 status                                                                description(asHtml: true)
                 startDate{
@@ -96,6 +99,7 @@ def get_media_by_id(id, type=None):
                 popularity
                 favourites
                 isAdult
+                siteUrl
                 studios{
                     nodes{
                         name
