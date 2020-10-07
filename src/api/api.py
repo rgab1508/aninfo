@@ -33,6 +33,12 @@ def get_media_by_name(name, type=None):
                     year
                 }
                 episodes
+                nextAiringEpisode {
+                    id
+                    episode
+                    airingAt
+                    timeUntilAiring
+                }
                 chapters
                 volumes
                 duration
@@ -90,6 +96,12 @@ def get_media_by_id(id, type=None):
                     year
                 }
                 episodes
+                nextAiringEpisode {
+                    id
+                    episode
+                    airingAt
+                    timeUntilAiring
+                }
                 chapters
                 volumes
                 duration

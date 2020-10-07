@@ -1,4 +1,5 @@
 import os
+import datetime
 from discord.ext import commands
 from discord import Embed, Color
 
@@ -25,6 +26,7 @@ def truncate(txt, l, url=None):
 
 async def searching(ctx, name):
     res = f'{ctx.message.author} searching for "{name}"'
+    print(res)
     await ctx.send(res)
 
 
@@ -41,7 +43,7 @@ async def search(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the anime you are looking for :(")
         return
-    #print(data, type(data), data.keys())
+    print(data, data.keys())
     #title = f'[{data["title"]["english"]}]({data["siteUrl"]})'
     em = Embed(title=data['type'], color=Color.purple())
     em.set_image(url=data['bannerImage'])
@@ -56,7 +58,14 @@ async def search(ctx, *args):
     s_e += "Ongoing" if data['endDate']['day'] is None else ""
     s_e += f"{data['endDate']['day']}.{data['endDate']['month']}.{data['endDate']['year']}" if data['endDate']['day'] else ""
     em.add_field(name="Date(Start-End):", value=s_e)
-    em.add_field(name="Episodes: ", value=data['episodes'])
+    if data['status'] == "RELEASING":
+        at = f"Airing episode {data['nextAiringEpisode']['episode']} At "
+        d = datetime.datetime.utcfromtimestamp(data['nextAiringEpisode']['airingAt'])
+        d = d.strftime("%d.%m.%Y %H:%MUTC")
+        at += d
+        em.add_field(name="Episodes:", value=at)
+    else:
+        em.add_field(name="Episodes: ", value=data['episodes'])
     em.add_field(name="Genres:", value=truncate(", ".join(data['genres']), 70))
     em.add_field(name="Average Score:", value=f"{data['averageScore']}%")
     em.add_field(name="Favourites: ", value=f"{data['favourites']} people liked this")
