@@ -35,8 +35,8 @@ def get_media_embed(data):
         em.set_image(url=data['bannerImage'])
     em.set_author(name=data['title']['english'], url=data['siteUrl'])
     des = truncate(data['description'], 400)
-    em.add_field(name="Description:", value=des)
-    em.add_field(name="Status:", value=data['status'], inline=True)
+    em.add_field(name="Description:", value=des, inline=False)
+    em.add_field(name="Status:", value=data['status'])
     if data['type'] == "ANIME":
         em.add_field(name="Format/Duration:", value=f"{data['format']} / {data['duration']} mins")
     s_e = "Yet Not Released" if data['startDate']['day'] is None else f"{data['startDate']['day']}.{data['startDate']['month']}.{data['startDate']['year']}"
@@ -44,22 +44,22 @@ def get_media_embed(data):
     s_e += "None" if data['startDate']['day'] is None else ""
     s_e += "Ongoing" if data['endDate']['day'] is None else ""
     s_e += f"{data['endDate']['day']}.{data['endDate']['month']}.{data['endDate']['year']}" if data['endDate']['day'] else ""
-    em.add_field(name="Date(Start-End):", value=s_e)
+    em.add_field(name="Date(Start-End):", value=s_e, inline=False)
     if data['type'] == "ANIME":
         if data['status'] == "RELEASING":
             at = f"Airing episode {data['nextAiringEpisode']['episode']} At "
             d = datetime.datetime.utcfromtimestamp(data['nextAiringEpisode']['airingAt'])
             d = d.strftime("%d.%m.%Y %H:%MUTC")
             at += d
-            em.add_field(name="Episodes:", value=at)
+            em.add_field(name="Episodes:", value=at, inline=False)
         else:
             em.add_field(name="Episodes: ", value=data['episodes'])
     else:
         em.add_field(name="Volumes: ", value=data['volumes'] or "None")
         em.add_field(name="Chapters : ", value=data['chapters'] or "None")
-    em.add_field(name="Genres:", value=truncate(", ".join(data['genres']), 70))
+    em.add_field(name="Genres:", value=truncate(", ".join(data['genres']), 70), inline=False)
+    em.add_field(name="Favourites: ", value=f"{data['favourites']} people liked this", inline=False)
     em.add_field(name="Average Score:", value=f"{data['averageScore']}%")
-    em.add_field(name="Favourites: ", value=f"{data['favourites']} people liked this")
     e_plus = "Yes" if data['isAdult'] == "true" else "No"
     em.add_field(name="18+ :", value=e_plus)
     if data['type'] == "ANIME":
@@ -67,7 +67,7 @@ def get_media_embed(data):
         for i in data['studios']['nodes']:
             st.append(i['name'])
         st = ", ".join(st)
-        em.add_field(name="Studios:", value=truncate(st, 50))
+        em.add_field(name="Studios:", value=truncate(st, 50), inline=False)
     ot = []
     for i in data['title'].keys():
         if data['title'][i]:
