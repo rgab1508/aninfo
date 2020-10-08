@@ -89,7 +89,7 @@ async def search(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the anime you are looking for :(")
         return
-    print(data, data.keys())
+    #print(data, data.keys())
     #title = f'[{data["title"]["english"]}]({data["siteUrl"]})'
     em = get_media_embed(data)
     await ctx.send(embed=em)
@@ -103,7 +103,7 @@ async def searchm(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the manga you are looking for :(")
         return
-    print(data, data.keys())
+    #print(data, data.keys())
     #title = f'[{data["title"]["english"]}]({data["siteUrl"]})'
     em = get_media_embed(data)
     await ctx.send(embed=em)
