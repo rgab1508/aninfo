@@ -13,6 +13,10 @@ bot = commands.Bot(command_prefix=COMMAND_PREFIX)
 
 
 def truncate(txt, l, url=None):
+    txt = txt.replace("<strong>", "**")
+    txt = txt.replace("</strong>", "**")
+    txt = txt.replace("<i>", "*")
+    txt = txt.replace("</i>", "*")
     txt = txt.replace("<br>", "").strip()
     if l > len(txt):
         return txt
