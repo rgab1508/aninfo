@@ -13,6 +13,7 @@ bot = commands.Bot(command_prefix=COMMAND_PREFIX)
 
 
 def truncate(txt, l, url=None):
+    txt = txt.replace("<br>", "").strip()
     if l > len(txt):
         return txt
     else:
@@ -30,10 +31,10 @@ async def searching(ctx, name):
     await ctx.send(res)
 
 def get_media_embed(data):
-    em = Embed(title=data['type'], color=Color.purple())
+    em = Embed(title=data['title']['english'] or data['title']['romaji'] or data['title']['native'], color=Color.purple())
     if data['bannerImage']:
         em.set_image(url=data['bannerImage'])
-    em.set_author(name=data['title']['english'], url=data['siteUrl'])
+    em.set_author(name="id#"+str(data['id']), url=data['siteUrl'])
     des = truncate(data['description'], 400)
     em.add_field(name="Description:", value=des, inline=False)
     em.add_field(name="Status:", value=data['status'])
@@ -58,7 +59,7 @@ def get_media_embed(data):
         em.add_field(name="Volumes: ", value=data['volumes'] or "None")
         em.add_field(name="Chapters : ", value=data['chapters'] or "None")
     em.add_field(name="Genres:", value=truncate(", ".join(data['genres']), 70), inline=False)
-    em.add_field(name="Favourites: ", value=f"{data['favourites']} people liked this", inline=False)
+    em.add_field(name="Favourites: ", value=f"{data['favourites']} anilist users liked this", inline=False)
     em.add_field(name="Average Score:", value=f"{data['averageScore']}%")
     e_plus = "Yes" if data['isAdult'] == "true" else "No"
     em.add_field(name="18+ :", value=e_plus)
@@ -89,8 +90,6 @@ async def search(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the anime you are looking for :(")
         return
-    #print(data, data.keys())
-    #title = f'[{data["title"]["english"]}]({data["siteUrl"]})'
     em = get_media_embed(data)
     await ctx.send(embed=em)
 
@@ -103,17 +102,16 @@ async def searchm(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the manga you are looking for :(")
         return
-    #print(data, data.keys())
-    #title = f'[{data["title"]["english"]}]({data["siteUrl"]})'
     em = get_media_embed(data)
     await ctx.send(embed=em)
 
 @bot.command()
-async def charcter(ctx, *args):
+async def character(ctx, *args):
     name = ' '.join(args)
     res = get_character_by_name(name)
+    data = res['data']['Character']
     await searching(ctx, name)
-    print(res)
+    print(data, data.keys())
 
 
 @bot.command()

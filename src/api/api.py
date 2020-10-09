@@ -84,7 +84,7 @@ def get_media_by_id(id, type=None):
                 }
                 type
                 format
-                status                                                                description(asHtml: true)
+                status                                                                description(asHtml: false)
                 startDate{
                     day
                     month
@@ -148,12 +148,14 @@ def get_character_by_name(name):
                 image {
                     medium
                 }
-                description(asHtml: true)
+                description(asHtml: false)
                 favourites
                 media {
                     nodes {
                         title {
                             english
+                            romaji
+                            native
                         }
                     }
                 }
@@ -187,12 +189,14 @@ def get_character_by_id(id):
                 image {
                     medium
                 }
-                description(asHtml: true)
+                description(asHtml: false)
                 favourites
                 media {
                     nodes {
                         title {
                             english
+                            romaji
+                            native
                         }
                     }
                 }
