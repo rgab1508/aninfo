@@ -128,8 +128,12 @@ async def character(ctx, *args):
         des = des.replace("__", "**")
         em.add_field(name="Description: ", value=des, inline=False)
     em.add_field(name="Favourites: ", value=f"{data['favourites']} Anilist users liked this character", inline=False)
-    f_list = []
-    em.add_field(name="From: ", value="ok", inline=False)
+    f_list =[]
+    for i in data['media']['nodes']:
+        title = i['title']
+        f_list.append(title['english'] or title['romaji'] or title['native'])
+    f_list = '\n'.join(f_list)
+    em.add_field(name="From: ", value=f_list, inline=False)
     await ctx.send(embed=em)
 
 @bot.command()
