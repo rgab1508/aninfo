@@ -17,6 +17,8 @@ def truncate(txt, l, url=None):
     txt = txt.replace("</strong>", "**")
     txt = txt.replace("<i>", "*")
     txt = txt.replace("</i>", "*")
+    txt = txt.replace("~", "|")
+    txt = txt.replace("!", "|")
     txt = txt.replace("<br>", "").strip()
     if l > len(txt):
         return txt
@@ -112,11 +114,23 @@ async def searchm(ctx, *args):
 @bot.command()
 async def character(ctx, *args):
     name = ' '.join(args)
+    await searching(ctx, name)
     res = get_character_by_name(name)
     data = res['data']['Character']
-    await searching(ctx, name)
+    if data is None:
+        await ctx.send("Cant Find the character you are looking for :(")
+        return
     print(data, data.keys())
-
+    em = Embed(title=data['name']['full'])
+    em.set_thumbnail(url=data['image']['medium'])
+    if data['description']:
+        des = truncate(data['description'], 1000)
+        des = des.replace("__", "**")
+        em.add_field(name="Description: ", value=des, inline=False)
+    em.add_field(name="Favourites: ", value=f"{data['favourites']} Anilist users liked this character", inline=False)
+    f_list = []
+    em.add_field(name="From: ", value="ok", inline=False)
+    await ctx.send(embed=em)
 
 @bot.command()
 async def studio(ctx, *args):
