@@ -69,7 +69,7 @@ def get_media_embed(data):
     em.add_field(name="Average Score:", value=f"{data['averageScore']}%")
     e_plus = "Yes" if data['isAdult'] == "true" else "No"
     em.add_field(name="18+ :", value=e_plus)
-    if data['type'] == "ANIME":
+    if data['type'] == "ANIME" and len(data['studios']['nodes']) > 0:
         st = []
         for i in data['studios']['nodes']:
             st.append(i['name'])
@@ -96,6 +96,7 @@ async def search(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the anime you are looking for :(")
         return
+    print(data)
     em = get_media_embed(data)
     await ctx.send(embed=em)
 
