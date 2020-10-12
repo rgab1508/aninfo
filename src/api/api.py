@@ -157,6 +157,8 @@ def get_character_by_name(name):
                             romaji
                             native
                         }
+                        format
+                        favourites
                     }
                 }
             }
@@ -198,6 +200,8 @@ def get_character_by_id(id):
                             romaji
                             native
                         }
+                        format
+                        favourites
                     }
                 }
             }
