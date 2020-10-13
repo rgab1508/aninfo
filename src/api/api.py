@@ -231,7 +231,11 @@ def get_studio_by_name(name):
                     nodes {
                         title {
                             english
+                            romaji
+                            native
                         }
+                        favourites
+                        format
                     }
                 }
                 favourites
@@ -262,6 +266,8 @@ def get_studio_by_id(id):
                     nodes {
                         title {
                             english
+                            romaji
+                            native
                         }
                     }
                 }

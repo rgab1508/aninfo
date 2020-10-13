@@ -151,6 +151,29 @@ async def studio(ctx, *args):
     name = ' '.join(args)
     await searching(ctx, name)
     res = get_studio_by_name(name)
+    data = res['data']['Studio']
+    if data is None:
+        await ctx.send("Cant find the Studio you are looking for")
+        return
+    em = Embed(title=data['name'])
+    em.set_author(name='#'+str(data['id']))
+
+    f_list = []
+    m_list = []
+    for i in sorted(data['media']['nodes'], key=lambda x: x['favourites'], reverse=True):
+        title = i['title']
+        fmt = i['format']
+        if fmt == "MOVIE":
+            m_list.append(title['english'] or title['romaji'] or title['native'])
+        else:
+            f_list.append(title['english'] or title['romaji'] or title['native'])
+    f_list = '\n'.join(f_list[:10])
+    m_list = '\n'.join(m_list[:10])
+    if len(f_list) > 0:
+        em.add_field(name="Animes: ", value=f_list, inline=False)
+    if len(m_list) > 0:
+        em.add_field(name="Movies:", value=m_list, inline=False)
     print(res)
+    await ctx.send(embed=em)
 
 bot.run(DISCORD_API_TOKEN)
