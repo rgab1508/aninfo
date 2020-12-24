@@ -283,4 +283,3 @@ def get_studio_by_id(id):
     req = requests.post(API_URL, json={'query':query, 'variables':variables})
 
     return req.json()
-

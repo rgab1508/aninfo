@@ -9,7 +9,7 @@ from api.api import get_media_by_name, get_media_by_id, get_character_by_name, g
 
 DISCORD_API_TOKEN = os.getenv('ANINFO_DIS_API_TOKEN')
 COMMAND_PREFIX = os.getenv('ANINFO_COMMAND_PREFIX') or ","
-bot = commands.Bot(command_prefix=COMMAND_PREFIX)
+bot = commands.Bot(command_prefix=COMMAND_PREFIX, help_command=None)
 
 
 def truncate(txt, l, url=None):
@@ -96,7 +96,6 @@ async def search(ctx, *args):
     if data is None:
         await ctx.send("Can't Find the anime you are looking for :(")
         return
-    print(data)
     em = get_media_embed(data)
     await ctx.send(embed=em)
 
@@ -121,7 +120,6 @@ async def character(ctx, *args):
     if data is None:
         await ctx.send("Cant Find the character you are looking for :(")
         return
-    print(data, data.keys())
     em = Embed(title=data['name']['full'])
     em.set_thumbnail(url=data['image']['medium'])
     if data['description']:
@@ -173,7 +171,46 @@ async def studio(ctx, *args):
         em.add_field(name="Animes: ", value=f_list, inline=False)
     if len(m_list) > 0:
         em.add_field(name="Movies:", value=m_list, inline=False)
-    print(res)
     await ctx.send(embed=em)
+
+
+@bot.command()
+async def help(ctx):
+    commands = [
+        {
+            "name": "_,search_ or _,s_",
+            "des": "Search Anime by name or Anilist #ID",
+            "format": ",search [anime_name/ID#number]",
+            "example": ",s one piece or ,s ID#1"
+        },
+        {
+            "name": "_,searchm_ or _,sm_",
+            "des": "Search Manga by name or Anilist #ID",
+            "format":",searchm [manga_name/ID#number]",
+            "example": ",sm attack on titan"
+        },
+        {
+            "name": "_,character_ or _,c_",
+            "des": "Search Character info by name or Anilist #ID",
+            "format":",c [character_name/ID#number]",
+            "example": ",c light yagami"
+        },
+        {
+            "name":"_,studio_ or _,st_",
+            "des":"Get Info about the Studio and media by that studio",
+            "format": ",st [studio_name/ID#number]",
+            "example":",st madhouse"
+        },
+        {
+            "name":"_,help_ or _,h_",
+            "des": "To display this message",
+            "example": ",help"
+        }
+    ]
+    all_help = Embed(title="Aninfo Help")
+    for c in commands:
+        all_help.add_field(name=f"{c['name']}", value=f"{c['des']}\n**Example:** {c['example']}", inline=False)
+    await ctx.send(embed=all_help)
+
 
 bot.run(DISCORD_API_TOKEN)
